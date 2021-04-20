@@ -1,8 +1,24 @@
-# run analysis
+---
+title: "README"
+author: "AM"
+date: "4/20/2021"
+output: github_document
+---
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      collapse = TRUE,
+                      out.width = "100%"
+                      )
+```
 
-library(tidyverse)
+# Getting and Cleaning Data
 
+## Programming assignment
+
+The script "run_analysis.R" downloads and unzips the dataset
+```{r download}
 #download and unzip the data files
 url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 
@@ -10,7 +26,11 @@ download.file(url, "data.zip", method = "curl")
 unzip("data.zip")
 
 dir("UCI HAR Dataset/",recursive = T)
+```
 
+All relevant files are imported
+
+```{r import}
 # import all data files
 test_data <- read.table("UCI HAR Dataset/test/X_test.txt")
 test_labels <- read.table("UCI HAR Dataset/test/y_test.txt")
@@ -22,30 +42,51 @@ train_subject <- read.table("UCI HAR Dataset/train/subject_train.txt")
 
 activity_labels <- read.table("UCI HAR Dataset/activity_labels.txt")
 features <- read.table("UCI HAR Dataset/features.txt")
+```
 
+The training set and test set are merged
+
+```{r merge}
 # combine training and test data sets
 data <- rbind(train_data, test_data)
 labels <- rbind(train_labels, test_labels)
 subject <- rbind(train_subject, test_subject)
+```
 
+The column names in data (variables) are renamed based on the "features.txt" file.
+
+```{r rename}
 # rename columns with descriptive feature names (using "features.txt")
 names(data) <- features$V2
 names(labels) <- "activity"
 names(subject) <- "subject"
+```
 
+"activity", is converted from number to factor, with descriptive name based on "activity_labels.txt"
+
+```{r activity}
 # change activity from number to factor with descriptive name
 activity <- as.factor(activity_labels[match(labels$activity, activity_labels$V1),2])
+```
 
+"activity" and "subject" columns are added to the data set, generating a full data frame. Everything else is removed to clean the environment.
+
+```{r full}
 # merge all in one data set and remove everything else
 full <- cbind(subject, activity, data)
-full <- as_tibble(full, .name_repair = "unique")
 
 rm(list = setdiff(ls(), "full"))
+```
 
+Finally, using dplyr, only mean and standard deviation are selected for each measurement, the average of each variable for each activity and each subject is calculated. the results are stored in a new dataset
+```{r dplyr}
 # extract only measurements on mean and std, group and calculate mean
+library(dplyr)
+full <- as_tibble(full, .name_repair = "unique")
 averaged <- full %>%
         select(subject:activity, contains(c("mean()", "std()"))) %>%
         group_by(subject, activity) %>%
         summarise(across(everything(), mean))
 
-                      
+```
+
