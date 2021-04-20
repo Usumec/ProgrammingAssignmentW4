@@ -21,6 +21,8 @@ This repository contains the following files:
 
 -   “variables.txt”: the variable names for the output.txt file
 
+-   “CodeBook.md”: the codebook explaining the new variables
+
 ## Script description
 
 The script “run\_analysis.R” downloads and unzips the dataset
