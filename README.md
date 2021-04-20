@@ -9,12 +9,17 @@ AM
 
 ## Content
 
-This repository contains the following files: - “README.md”: this file,
-which includes a description of the script - “run\_analysis.R”: the full
-script - “output.txt”: a table exported by the run\_analysis.R script,
-which includes the mean and standard deviation for each of the original
-measurements, averaged by subject and by activity. - “variables.txt”:
-the variable names for the output.txt file
+This repository contains the following files:
+
+-   “README.md”: this file, which includes a description of the script
+
+-   “run\_analysis.R”: the full script
+
+-   “output.txt”: a table exported by the run\_analysis.R script, which
+    includes the mean and standard deviation for each of the original
+    measurements, averaged by subject and by activity.
+
+-   “variables.txt”: the variable names for the output.txt file
 
 ## Script description
 
