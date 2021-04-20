@@ -1,0 +1,55 @@
+---
+title: "Codebook"
+author: "AM"
+date: "20/04/2021"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      collapse = TRUE,
+                      out.width = "100%"
+                      )
+```
+
+# Codebook
+
+## Original files
+
+The following files available in the original data set were used as input:
+
+- 'features_info.txt'
+
+- 'features.txt'
+
+- 'activity_labels.txt'
+
+- 'train/X_train.txt'
+
+- 'train/y_train.txt'
+
+- 'test/X_test.txt'
+
+- 'test/y_test.txt'
+
+- 'train/subject_train.txt'
+
+- 'test/subject_test.txt'
+
+# Output files
+"Output.txt" contains the following variables:
+
+- Subject No.
+
+- Activity
+
+- Selected variables: mean and standard deviation for every available measurement, as described in "features_info.txt"
+
+The values of each variable are the mean of the observations for each activity of each subject
+
+The variable names are available in "variables.txt"
+```{r var, echo=F}
+read.table("variables.txt")
+
+```
+ 
