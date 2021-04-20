@@ -21,23 +21,29 @@ train_subject <- read.table("UCI HAR Dataset/train/subject_train.txt")
 activity_labels <- read.table("UCI HAR Dataset/activity_labels.txt")
 features <- read.table("UCI HAR Dataset/features.txt")
 
+# combine training and test data sets
 data <- rbind(train_data, test_data)
 labels <- rbind(train_labels, test_labels)
 subject <- rbind(train_subject, test_subject)
 
-rm(list = ls(pattern = "test"))
-rm(list = ls(pattern = "train"))
-
+# rename columns with descriptive feature names (using "features.txt")
 names(data) <- features$V2
 names(labels) <- "activity"
 names(subject) <- "subject"
 
-# change activity from number to factor
-labels <- as.factor(activity_labels[match(labels$activity, activity_labels$V1),2])
+# change activity from number to factor with descriptive name
+activity <- as.factor(activity_labels[match(labels$activity, activity_labels$V1),2])
 
 # merge all in one data set and remove everything else
-full <- cbind(subject, labels, data)
+full <- cbind(subject, activity, data)
 full <- as_tibble(full, .name_repair = "unique")
 
 rm(list = setdiff(ls(), "full"))
 
+# extract only measurements on mean and std, group and calculate mean
+averaged <- full %>%
+        select(subject:activity, contains(c("mean()", "std()"))) %>%
+        group_by(subject, activity) %>%
+        summarise(across(everything(), mean))
+
+                      
