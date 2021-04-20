@@ -1,7 +1,5 @@
-# run analysis
-
-
-library(tidyverse)
+# run_analysis.R
+# AM 20/04/2021
 
 #download and unzip the data files
 url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
@@ -38,14 +36,15 @@ activity <- as.factor(activity_labels[match(labels$activity, activity_labels$V1)
 
 # merge all in one data set and remove everything else
 full <- cbind(subject, activity, data)
-full <- as_tibble(full, .name_repair = "unique")
 
 rm(list = setdiff(ls(), "full"))
 
 # extract only measurements on mean and std, group and calculate mean
+library(dplyr)
+full <- as_tibble(full, .name_repair = "unique")
 averaged <- full %>%
         select(subject:activity, contains(c("mean()", "std()"))) %>%
         group_by(subject, activity) %>%
         summarise(across(everything(), mean))
 
-                      
+write.table(averaged, "output.txt", quote = F, row.names = F)

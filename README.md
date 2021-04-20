@@ -1,13 +1,22 @@
 README
 ================
 AM
-4/20/2021
+20/04/2021
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Getting and Cleaning Data
+# Getting and Cleaning Data. Programming assignment
 
-## Programming assignment
+## Content
+
+This repository contains the following files: - “README.md”: this file,
+which includes a description of the script - “run\_analysis.R”: the full
+script - “output.txt”: a table exported by the run\_analysis.R script,
+which includes the mean and standard deviation for each of the original
+measurements, averaged by subject and by activity. - “variables.txt”:
+the variable names for the output.txt file
+
+## Script description
 
 The script “run\_analysis.R” downloads and unzips the dataset
 
@@ -104,7 +113,8 @@ rm(list = setdiff(ls(), "full"))
 
 Finally, using dplyr, only mean and standard deviation are selected for
 each measurement, the average of each variable for each activity and
-each subject is calculated. the results are stored in a new dataset
+each subject is calculated. the results are stored in a new dataset. The
+output is written in a text file named “output.txt”
 
 ``` r
 # extract only measurements on mean and std, group and calculate mean
@@ -130,4 +140,6 @@ averaged <- full %>%
         group_by(subject, activity) %>%
         summarise(across(everything(), mean))
 ## `summarise()` has grouped output by 'subject'. You can override using the `.groups` argument.
+
+write.table(averaged, "output.txt", quote = F, row.names = F)
 ```
