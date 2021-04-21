@@ -3,6 +3,8 @@ Codebook
 AM
 20/04/2021
 
+<!-- CodeBook.md is generated from CodeBook.Rmd. Please edit that file -->
+
 # Codebook
 
 ## Original files
